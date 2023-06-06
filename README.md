@@ -2,7 +2,8 @@
 コンテナ型仮想化ソフトDockerの基本  
 
 ### たった1日で基本が身に付く！ Docker/Kubernetes超入門
-https://gihyo.jp/book/2020/978-4-297-11428-2  
++ 書籍 https://gihyo.jp/book/2020/978-4-297-11428-2  
++ サポートページ https://gihyo.jp/book/2020/978-4-297-11428-2/support
 
 #### 目次
 
