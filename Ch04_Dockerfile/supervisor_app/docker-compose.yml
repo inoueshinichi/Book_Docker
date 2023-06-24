@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  supervisor:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: c5_supervisor
+    container_name: c5_supervisor
+    ports:
+      - "10022:22"
+      - "8080:80"
