@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  nginx:
+    image: nginx:1.17.6-alpine
+    ports:
+    - 8080:80
+    environment:
+      MYENV: "hello compose"
