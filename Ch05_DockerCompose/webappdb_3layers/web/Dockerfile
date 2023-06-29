@@ -5,16 +5,11 @@ From nginx:1.17.5-alpine
 
 Label author="inoue.shinichi.1800@gmail.com"
 
-# Copy
-# ここにnginx.conf.tmpを追加する.
-COPY ./start.sh /usr/local/bin/start.sh
+COPY ./nginx.conf.tmp /etc/nginx/
+COPY ./start.sh /usr/local/bin
 
-# Env
-ENV PORT=80
-
-# Open Ports
-EXPOSE 80
-
+ENV NAIVE_HTTP_PORT=${HTTP_PORT}
+EXPOSE ${HTTP_PORT}
 
 RUN chmod +x /usr/local/bin/start.sh
 CMD ["/usr/local/bin/start.sh"]
