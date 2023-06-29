@@ -9,8 +9,8 @@ services:
       - 8081:80
     networks:
       - wa2_net
-    image: ch05_flask_dev
-    container_name: ${DHUB_USER}ch05_flask_dev-container:${IMG_VER}
+    image: ${DHUB_USER}/ch05_flask_dev:${IMG_VER}
+    container_name: ch05_flask_dev-container
     stop_signal: SIGINT
   web:
     build:
@@ -21,8 +21,8 @@ services:
       - 8080:80
     networks:
       - wa2_net
-    image: ch05_nginx_dev
-    container_name: ${DHUB_USER}/ch05_nginx_dev-container:${IMG_VER}
+    image: ${DHUB_USER}/ch05_nginx_dev:${IMG_VER}
+    container_name: ch05_nginx_dev-container
     volumes:
       - ./web/html:/usr/share/nginx/html
 
