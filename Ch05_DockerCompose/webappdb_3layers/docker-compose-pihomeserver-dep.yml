@@ -8,8 +8,8 @@ services:
     container_name: ch05_nginx_web_srv-container
     depends_on:
       - app
-    # ports:
-    #   - 8080:80
+    ports:
+      - 80:80
     networks:
       - wad_3layers_net
     restart: unless-stopped
