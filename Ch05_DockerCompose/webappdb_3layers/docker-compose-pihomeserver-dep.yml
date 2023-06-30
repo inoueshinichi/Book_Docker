@@ -36,6 +36,9 @@ services:
     # volumes:
     #   - ./app/src:/flask_app
   db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.pi.arm32
     image: ${DHUB_USER}/ch05_db_server-dep:${IMG_VER}
     container_name: ch05_redis_db_server-container
     networks:

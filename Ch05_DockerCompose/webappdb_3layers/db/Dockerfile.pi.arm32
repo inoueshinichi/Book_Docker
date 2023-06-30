@@ -1,0 +1,6 @@
+# Dockerfile for redis db
+
+From arm32v7/redis:6.0.19-alpine3.18
+
+Label author="inoue.shinichi.1800@gmail.com"
+
