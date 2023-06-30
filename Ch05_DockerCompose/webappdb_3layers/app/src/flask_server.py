@@ -10,15 +10,21 @@ from flask import (
 )
 
 # Redis db conf
-REDIS_HOST = os.environ['REDIS_HOST']
-REDIS_PORT = os.environ['REDIS_PORT']
-REDIS_DB = os.environ['REDIS_DB']
+REDIS_HOST: str = os.environ['REDIS_HOST']
+REDIS_PORT: int = int(os.environ['REDIS_PORT'])
+REDIS_DB: int = int(os.environ['REDIS_DB'])
 
-# Redis interface
+print('---- Check db access setting ----')
+print('REDIS_HOST', REDIS_HOST)
+print('REDIS_PORT', REDIS_PORT)
+print('REDIS_DB', REDIS_DB)
+
+print('Connect redis db server')
 REDIS = redis.Redis(host=REDIS_HOST, 
                     port=REDIS_PORT,
                     db=REDIS_DB,
                     )
+print('Redis db server: ', REDIS)
 
 # App port (for this REST_API server)
 APP_PORT = int(os.environ['APP_PORT'])
@@ -48,13 +54,16 @@ def api_keys():
 @app.route(f'/api/{API_VER}/keys/<key>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def api_key(key):
     if not isalnum(key):
+        print('key is not isalnum')
         return error(400.1)
     
     body = request.get_data().decode().strip()
     if request.method in ['POST', 'PUT']:
         if body == '':
+            print('body empty')
             return error(400.2)
         if not isalnum(body):
+            print('body is not alnum')
             return error(400.3)
     
     def get():
@@ -121,6 +130,36 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
+    """ Test connection for redis db server """
+    # def get(key):
+    #     value = REDIS.get(key)
+    #     if value is None:
+    #         raise Exception('key does not exist')
+    #     return value.decode()
+
+    # def post(key, value):
+    #     if REDIS.get(key) is not None:
+    #         raise Exception('key already exists')
+    #     REDIS.set(key, value)
+
+    # def put(key, value):
+    #     REDIS.set(key, value)
+
+    # def delete(key):
+    #     if REDIS.get(key) is None:
+    #         raise Exception('key does not exist')
+    #     REDIS.delete(key)
+
+    # print('[TEST]---> access redis db')
+    # post('apple', 'red')
+    # post('banana', 'yellow')
+    # value = get('apple')
+    # print(value) # => red
+    # put('apple', 'green')
+    # delete('banana')
+    # print('[TEST]<---- access redis db')
+
+    print('[Start] flask app server')
     app.run(debug=True,
             host='0.0.0.0',
             port=APP_PORT,

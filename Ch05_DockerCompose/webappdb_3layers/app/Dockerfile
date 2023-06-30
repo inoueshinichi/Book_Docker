@@ -10,7 +10,7 @@ Label author="inoue.shinichi.1800@gmail.com"
 RUN pip install flask==2.3.2 redis==3.3.8
 
 WORKDIR /flask_app
-COPY ./bind_src/flask_server.py /flask_app
+COPY ./src/flask_server.py /flask_app
 
 ENV APP_PORT 80
 
@@ -19,4 +19,5 @@ ENV REDIS_HOST 127.0.0.1
 ENV REDIS_PORT 6379
 ENV REDIS_DB 0
 
+# Test connection to redis db
 CMD ["python", "-u", "/flask_app/flask_server.py"]

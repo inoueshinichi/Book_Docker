@@ -4,31 +4,31 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
-    image: ${DHUB_USER}/ch05_nginx_web_srv_dev:${IMG_VER}
+    image: ${DHUB_USER}/ch05_nginx_web_srv-dev:${IMG_VER}
     container_name: ch05_nginx_web_srv-container
     depends_on:
       - app
     ports:
-      - ${FORWARDED_WEB_PORT}:80
+      - 8080:80
     networks:
       - wad_3layers_net
-    voluems: # Bind to local host directory
-      - ./web/bind_html:/usr/share/nginx/html
     # restart: unless-stopped
     environment:
-      APP_SERVER: http://app:${NAIVE_APP_PORT}
+      APP_SERVER: http://app:${APP_PORT}
+    volumes:
+      - ./web/html:/usr/share/nginx/html
   app:
     build:
       context: ./app
       dockerfile: Dockerfile
-    image: ${DHUB_USER}/ch05_flask_app_srv_dev:${IMG_VER}
+    image: ${DHUB_USER}/ch05_flask_app_srv-dev:${IMG_VER}
     container_name: ch05_flask_app_srv-container
     depends_on:
       - db
     networks:
       - wad_3layers_net
-    volumes: # Bind to local host directory
-      - ./app/bind_src:/flask_app
+    volumes:
+      - ./app/src:/flask_app
     stop_signal: SIGINT
     # restart: unless-stopped
     environment:
@@ -36,19 +36,22 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_DB: ${REDIS_DB}
   db:
-    image: redis:5.0.6-alpine3.10
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    image: ${DHUB_USER}/ch05_redis_db_server-dev:${IMG_VER}
     container_name: ch05_redis_db_server-container
-    volumes:
-      - ./bind_redis_db_store:/data # Bind to local host directory
     networks:
       - wad_3layers_net
     # restart: unless-stopped
+    volumes:
+      - ./redis_db:/redis_db/data
 
 networks:
   wad_3layers_net:
     driver: bridge
 
-volumes:
-  ch05_redis_volume:
-    driver: local
+# volumes:
+#   ch05_3layers_redis_volume:
+#     driver: local
 

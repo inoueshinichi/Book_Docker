@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    image: ${DHUB_USER}/ch05_nginx_web_srv-dev:${IMG_VER}
+    container_name: ch05_nginx_web_srv-container
+    depends_on:
+      - app
+    ports:
+      - 8080:80
+    networks:
+      - wad_3layers_net
+    restart: unless-stopped
+    environment:
+      APP_SERVER: http://app:${APP_PORT}
+    # volumes:
+    #   - ./web/html:/usr/share/nginx/html
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: ${DHUB_USER}/ch05_flask_app_srv-dev:${IMG_VER}
+    container_name: ch05_flask_app_srv-container
+    depends_on:
+      - db
+    networks:
+      - wad_3layers_net
+    stop_signal: SIGINT
+    restart: unless-stopped
+    environment:
+      REDIS_HOST: db
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_DB: ${REDIS_DB}
+    # volumes:
+    #   - ./app/src:/flask_app
+  db:
+    image: ${DHUB_USER}/ch05_db_server-dep:${IMG_VER}
+    container_name: ch05_redis_db_server-container
+    networks:
+      - wad_3layers_net
+    restart: unless-stopped
+    volumes:
+      - ch05_3layers_redis_volume:/redis_db/data
+
+networks:
+  wad_3layers_net:
+    driver: bridge
+
+volumes:
+  ch05_3layers_redis_volume:
+    driver: local
+
