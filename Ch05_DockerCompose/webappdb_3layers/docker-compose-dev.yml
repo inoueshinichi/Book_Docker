@@ -45,7 +45,7 @@ services:
       - wad_3layers_net
     # restart: unless-stopped
     volumes:
-      - ./redis_db:/redis_db/data
+      - ./db/redis_db:/redis_db/data
 
 networks:
   wad_3layers_net:
